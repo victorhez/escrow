@@ -25,23 +25,25 @@
 import { AgentKit, walletActionProvider, erc20ActionProvider } from "@coinbase/agentkit";
 
 export interface LiveWalletConfig {
-  apiKeyName: string;
-  apiKeyPrivateKey: string;
+  cdpApiKeyId: string;
+  cdpApiKeySecret: string;
+  cdpWalletSecret: string;
   networkId: "base-sepolia" | "base-mainnet";
   /** USDC contract address on the target network. */
   usdcAddress: string;
 }
 
 /**
- * Boots an AgentKit instance backed by a CDP-managed wallet. This wallet
- * *is* the escrow account: the agent holds custody of client funds between
- * "funded" and "released" and executes the release transaction itself once
- * a milestone passes review, with no manual signing step.
+ * Boots an AgentKit instance backed by a CDP-managed smart wallet. This
+ * wallet *is* the escrow account: the agent holds custody of client funds
+ * between "funded" and "released" and executes the release transaction
+ * itself once a milestone passes review, with no manual signing step.
  */
 export async function createEscrowAgent(config: LiveWalletConfig) {
   const agentKit = await AgentKit.from({
-    cdpApiKeyName: config.apiKeyName,
-    cdpApiKeyPrivateKey: config.apiKeyPrivateKey,
+    cdpApiKeyId: config.cdpApiKeyId,
+    cdpApiKeySecret: config.cdpApiKeySecret,
+    cdpWalletSecret: config.cdpWalletSecret,
     actionProviders: [walletActionProvider(), erc20ActionProvider()],
   });
 
@@ -55,8 +57,10 @@ export async function createEscrowAgent(config: LiveWalletConfig) {
  * confirmation the agent listens for before marking the milestone "funded".
  */
 export async function fundEscrowOnChain(
-  _agentKit: Awaited<ReturnType<typeof createEscrowAgent>>,
-  _params: { fromAddress: string; amountUsdc: number }
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  agentKit: Awaited<ReturnType<typeof createEscrowAgent>>,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  params: { fromAddress: string; amountUsdc: number }
 ): Promise<{ txHash: string }> {
   throw new Error(
     "fundEscrowOnChain is a production stub — the demo uses mockLedger.fundMilestone instead."
@@ -70,8 +74,10 @@ export async function fundEscrowOnChain(
  * payout the instant acceptance criteria are met.
  */
 export async function releaseEscrowOnChain(
-  _agentKit: Awaited<ReturnType<typeof createEscrowAgent>>,
-  _params: { toAddress: string; amountUsdc: number; feeBps: number }
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  agentKit: Awaited<ReturnType<typeof createEscrowAgent>>,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  params: { toAddress: string; amountUsdc: number; feeBps: number }
 ): Promise<{ txHash: string; feeUsdc: number }> {
   throw new Error(
     "releaseEscrowOnChain is a production stub — the demo uses mockLedger.reviewMilestone instead."

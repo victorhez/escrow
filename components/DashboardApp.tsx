@@ -16,13 +16,14 @@ export function DashboardApp() {
 
   const wallet = useMemo(() => computeWallet(jobs), [jobs]);
 
-  const selected = useMemo(() => {
-    for (const job of jobs) {
-      const m = job.milestones.find((x) => x.id === selectedId);
-      if (m) return { job, milestone: m };
+  let selected: { job: Job; milestone: Job["milestones"][number] } | null = null;
+  for (const job of jobs) {
+    const m = job.milestones.find((x) => x.id === selectedId);
+    if (m) {
+      selected = { job, milestone: m };
+      break;
     }
-    return null;
-  }, [jobs, selectedId]);
+  }
 
   function updateMilestone(milestoneId: string, updater: (j: Job) => Job) {
     setJobs((prev) =>

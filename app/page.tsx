@@ -62,7 +62,7 @@ export default function Home() {
               </h2>
               <p className="mt-4 text-muted">
                 Escrow takes a 1.5% fee on funds released — never on funds held,
-                never on a job that stalls. That aligns the agent's incentives with
+                never on a job that stalls. That aligns the agent&apos;s incentives with
                 both sides: it only earns by resolving jobs cleanly and quickly.
               </p>
             </div>

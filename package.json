@@ -2,6 +2,7 @@
   "name": "escrow",
   "version": "0.1.0",
   "private": true,
+  "description": "An autonomous payments agent that funds, reviews, and releases freelance milestone payments on Base, built on Coinbase AgentKit.",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -9,6 +10,7 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@coinbase/agentkit": "^0.10.4",
     "framer-motion": "^11.15.0",
     "next": "16.3.6",
     "react": "19.2.8",
